@@ -66,7 +66,11 @@
                 <input type="file" id="fotograf" accept="image/*">
                 <img id="fotografOnizleme" style="display: none; max-width: 200px; margin-top: 10px;">
             </div>
-            <button type="button" onclick="ekleKisi()">Kişi Ekle</button>
+            <div class="form-group">
+                <label>Doğum Tarihi:</label>
+                <input type="date" id="dogumTarihi">
+            </div>
+            <button type="button" onclick="ekleKisi()" class="save-btn">Kişi Ekle</button>
         </form>
     </div>
     <script>

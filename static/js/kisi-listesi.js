@@ -1,6 +1,19 @@
 // Varsayılan fotoğraf
 const DEFAULT_PHOTO = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=';
 
+// Tarih formatlama fonksiyonu
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Geçersiz tarih ise orijinal string'i döndür
+    
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${day}/${month}/${year}`;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Sayfa yüklendi');
     kisileriGetir();
@@ -49,6 +62,7 @@ function kisileriGetir() {
                         <td>${kisi.ad || ''}</td>
                         <td>${kisi.soyad || ''}</td>
                         <td>${kisi.tc || ''}</td>
+                        <td>${formatDate(kisi.dogumTarihi)}</td>
                         <td>${kisi.cepTelefonu || ''}</td>
                         <td>${kisi.anneAdSoyad || ''}</td>
                         <td>${kisi.babaAdSoyad || ''}</td>

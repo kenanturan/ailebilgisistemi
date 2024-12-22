@@ -57,6 +57,7 @@ function kisiGuncelle() {
         ad: document.getElementById('ad').value,
         soyad: document.getElementById('soyad').value,
         tc: document.getElementById('tc').value,
+        dogumTarihi: document.getElementById('dogumTarihi').value,
         cepTelefonu: document.getElementById('cepTelefonu').value,
         anneAdi: document.getElementById('anneAdi').value,
         babaAdi: document.getElementById('babaAdi').value,

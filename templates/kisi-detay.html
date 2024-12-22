@@ -28,6 +28,10 @@
                 <input type="text" id="tc" value="{{.Person.TC}}" required pattern="[0-9]{11}">
             </div>
             <div class="form-group">
+                <label>Doğum Tarihi:</label>
+                <input type="date" id="dogumTarihi" value="{{if .Person.DogumTarihi}}{{.Person.DogumTarihi}}{{end}}">
+            </div>
+            <div class="form-group">
                 <label>Telefon:</label>
                 <input type="tel" id="cepTelefonu" value="{{.Person.CepTelefonu}}" pattern="[0-9]{10}">
             </div>

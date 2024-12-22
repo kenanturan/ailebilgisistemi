@@ -22,6 +22,7 @@ type Person struct {
 	Ad          string `json:"ad"`
 	Soyad       string `json:"soyad"`
 	TC          string `json:"tc"`
+	DogumTarihi string `json:"dogumTarihi"`
 	CepTelefonu string `json:"cepTelefonu"`
 	AnneAdi     string `json:"anneAdi"`
 	BabaAdi     string `json:"babaAdi"`
@@ -77,6 +78,7 @@ func initDB() {
 		ad TEXT NOT NULL,
 		soyad TEXT NOT NULL,
 		tc TEXT UNIQUE NOT NULL,
+		dogumTarihi TEXT,
 		cepTelefonu TEXT,
 		anneAdi TEXT,
 		babaAdi TEXT,
@@ -96,6 +98,12 @@ func initDB() {
 	if err != nil {
 		// Kolon zaten varsa hata vermeyi görmezden gel
 		log.Printf("Eş kolonu eklenirken hata (muhtemelen zaten var): %v", err)
+	}
+
+	// Doğum tarihi kolonu ekle
+	_, err = db.Exec(`ALTER TABLE people ADD COLUMN dogumTarihi TEXT;`)
+	if err != nil {
+		log.Printf("Doğum tarihi kolonu eklenirken hata (muhtemelen zaten var): %v", err)
 	}
 
 	// Evlilik tablosunu oluştur
@@ -183,14 +191,14 @@ func createPerson(w http.ResponseWriter, r *http.Request) {
 
 	// SQL sorgusunu logla
 	log.Printf("SQL sorgusu çalıştırılıyor: INSERT INTO people VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-		person.ID, person.Ad, person.Soyad, person.TC, person.CepTelefonu,
+		person.ID, person.Ad, person.Soyad, person.TC, person.DogumTarihi, person.CepTelefonu,
 		person.AnneAdi, person.BabaAdi, person.EsID, person.Cinsiyet, person.Hakkinda, "fotograf_data")
 
 	// Veritabanına ekle
 	_, err = db.Exec(`
-		INSERT INTO people (id, ad, soyad, tc, cepTelefonu, anneAdi, babaAdi, esId, cinsiyet, hakkinda, fotograf) 
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-		person.ID, person.Ad, person.Soyad, person.TC, person.CepTelefonu,
+		INSERT INTO people (id, ad, soyad, tc, dogumTarihi, cepTelefonu, anneAdi, babaAdi, esId, cinsiyet, hakkinda, fotograf) 
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		person.ID, person.Ad, person.Soyad, person.TC, person.DogumTarihi, person.CepTelefonu,
 		nullToEmpty(person.AnneAdi), nullToEmpty(person.BabaAdi), nullToEmpty(person.EsID),
 		person.Cinsiyet, nullToEmpty(person.Hakkinda), nullToEmpty(person.Fotograf))
 	if err != nil {
@@ -226,7 +234,7 @@ func getPeople(w http.ResponseWriter, r *http.Request) {
 
 	// SQL sorgusunu logla
 	sqlQuery := `
-		SELECT p.id, p.ad, p.soyad, p.tc, p.cepTelefonu, 
+		SELECT p.id, p.ad, p.soyad, p.tc, p.dogumTarihi, p.cepTelefonu, 
 			   COALESCE(p.anneAdi, '') as anneAdi, 
 			   COALESCE(p.babaAdi, '') as babaAdi,
 			   CASE WHEN p.esId IS NULL THEN '' ELSE p.esId END as esId,
@@ -253,7 +261,7 @@ func getPeople(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var p PersonWithParents
 		err := rows.Scan(
-			&p.ID, &p.Ad, &p.Soyad, &p.TC, &p.CepTelefonu,
+			&p.ID, &p.Ad, &p.Soyad, &p.TC, &p.DogumTarihi, &p.CepTelefonu,
 			&p.AnneAdi, &p.BabaAdi, &p.EsID, &p.Cinsiyet, &p.Hakkinda, &p.Fotograf,
 			&p.AnneAdSoyad, &p.BabaAdSoyad)
 		if err != nil {
@@ -319,11 +327,11 @@ func updatePerson(w http.ResponseWriter, r *http.Request) {
 	// Kişiyi güncelle
 	result, err := db.Exec(`
 		UPDATE people 
-		SET ad=?, soyad=?, tc=?, cepTelefonu=?, 
+		SET ad=?, soyad=?, tc=?, dogumTarihi=?, cepTelefonu=?, 
 			anneAdi=?, babaAdi=?, esId=?, 
 			cinsiyet=?, hakkinda=?, fotograf=? 
 		WHERE id=?`,
-		person.Ad, person.Soyad, person.TC, person.CepTelefonu,
+		person.Ad, person.Soyad, person.TC, person.DogumTarihi, person.CepTelefonu,
 		nullToEmpty(person.AnneAdi), nullToEmpty(person.BabaAdi), nullToEmpty(person.EsID),
 		person.Cinsiyet, nullToEmpty(person.Hakkinda), nullToEmpty(person.Fotograf), person.ID)
 	if err != nil {
@@ -382,7 +390,7 @@ func kisiDetayHandler(w http.ResponseWriter, r *http.Request) {
 	// Kişinin kendi bilgilerini al
 	var person PersonWithParents
 	err := db.QueryRow(`
-		SELECT p.id, p.ad, p.soyad, p.tc, p.cepTelefonu, 
+		SELECT p.id, p.ad, p.soyad, p.tc, p.dogumTarihi, p.cepTelefonu, 
 			   COALESCE(p.anneAdi, '') as anneAdi, 
 			   COALESCE(p.babaAdi, '') as babaAdi,
 			   COALESCE(p.esId, '') as esId,
@@ -395,7 +403,7 @@ func kisiDetayHandler(w http.ResponseWriter, r *http.Request) {
 		LEFT JOIN people anne ON p.anneAdi = anne.id
 		LEFT JOIN people baba ON p.babaAdi = baba.id
 		WHERE p.id = ?`, id).Scan(
-		&person.ID, &person.Ad, &person.Soyad, &person.TC, &person.CepTelefonu,
+		&person.ID, &person.Ad, &person.Soyad, &person.TC, &person.DogumTarihi, &person.CepTelefonu,
 		&person.AnneAdi, &person.BabaAdi, &person.EsID, &person.Cinsiyet, &person.Hakkinda, &person.Fotograf,
 		&person.AnneAdSoyad, &person.BabaAdSoyad)
 
