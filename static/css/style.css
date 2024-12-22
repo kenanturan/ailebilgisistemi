@@ -1,0 +1,284 @@
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+}
+
+nav {
+    background-color: #4CAF50;
+    padding: 1em;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #e0e0e0;
+}
+
+.container {
+    margin: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Diğer stil tanımlamaları */ 
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Tablo stilleri */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.search-box {
+    margin: 20px 0;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.action-buttons button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Modal stilleri */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #2196F3;
+    color: white;
+    margin-right: 5px;
+}
+
+.parent-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.parent-link {
+    color: #2196F3;
+    text-decoration: none;
+    font-size: 0.9em;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #e3f2fd;
+}
+
+.parent-link:hover {
+    background-color: #bbdefb;
+    text-decoration: underline;
+}
+
+.photo-preview {
+    margin-top: 10px;
+}
+
+.photo-preview img {
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.photo-info {
+    margin-top: 5px;
+    font-size: 0.8em;
+    color: #666;
+}
+
+.children-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.children-section h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.child-item {
+    margin: 10px 0;
+}
+
+.child-link {
+    color: #2196F3;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+}
+
+.child-link:hover {
+    background-color: #bbdefb;
+    text-decoration: underline;
+}
+
+.child-parents {
+    font-size: 0.9em;
+    color: #666;
+    margin-left: 10px;
+    margin-top: 3px;
+}
+
+.child-parents .parent-link {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.9em;
+    color: #2196F3;
+    text-decoration: none;
+    background-color: #e3f2fd;
+    border-radius: 3px;
+}
+
+.child-parents .parent-link:hover {
+    background-color: #bbdefb;
+    text-decoration: underline;
+}
+
+.child-info {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip stillerini tamamen kaldırdık */

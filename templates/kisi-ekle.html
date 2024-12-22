@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kişi Ekle - Aile Bilgi Sistemi</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/kisi-listesi">Kişi Listesi</a></li>
+            <li><a href="/kisi-ekle">Kişi Ekle</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Yeni Kişi Ekle</h2>
+        <form id="kisiForm" onsubmit="return false;">
+            <div class="form-group">
+                <label>Ad:</label>
+                <input type="text" id="ad" required>
+            </div>
+            <div class="form-group">
+                <label>Soyad:</label>
+                <input type="text" id="soyad" required>
+            </div>
+            <div class="form-group">
+                <label>TC:</label>
+                <input type="text" id="tc" required pattern="[0-9]{11}" title="11 haneli TC kimlik numarası">
+            </div>
+            <div class="form-group">
+                <label>Cep Telefonu:</label>
+                <input type="tel" id="cepTelefonu" pattern="[0-9]{10}" title="Başında 0 olmadan 10 haneli numara">
+            </div>
+            <div class="form-group">
+                <label>Anne:</label>
+                <select id="anneAdi">
+                    <option value="">Seçiniz...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Baba:</label>
+                <select id="babaAdi">
+                    <option value="">Seçiniz...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Eş:</label>
+                <select id="esId">
+                    <option value="">Seçiniz...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cinsiyet:</label>
+                <select id="cinsiyet" required>
+                    <option value="">Seçiniz...</option>
+                    <option value="Kadın">Kadın</option>
+                    <option value="Erkek">Erkek</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Hakkında:</label>
+                <textarea id="hakkinda" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Fotoğraf:</label>
+                <input type="file" id="fotograf" accept="image/*">
+                <img id="fotografOnizleme" style="display: none; max-width: 200px; margin-top: 10px;">
+            </div>
+            <button type="button" onclick="ekleKisi()">Kişi Ekle</button>
+        </form>
+    </div>
+    <script>
+        window.onerror = function(msg, url, line) {
+            console.error(`Hata: ${msg}\nDosya: ${url}\nSatır: ${line}`);
+        };
+    </script>
+    <script src="/static/js/kisi-ekle.js"></script>
+</body>
+</html> 

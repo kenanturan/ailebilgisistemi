@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kişi Detayı - Aile Bilgi Sistemi</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/kisi-listesi">Kişi Listesi</a></li>
+            <li><a href="/kisi-ekle">Kişi Ekle</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Kişi Bilgileri</h2>
+        <form id="kisiForm">
+            <div class="form-group">
+                <label>Ad:</label>
+                <input type="text" id="ad" value="{{.Person.Ad}}" required>
+            </div>
+            <div class="form-group">
+                <label>Soyad:</label>
+                <input type="text" id="soyad" value="{{.Person.Soyad}}" required>
+            </div>
+            <div class="form-group">
+                <label>TC:</label>
+                <input type="text" id="tc" value="{{.Person.TC}}" required pattern="[0-9]{11}">
+            </div>
+            <div class="form-group">
+                <label>Telefon:</label>
+                <input type="tel" id="cepTelefonu" value="{{.Person.CepTelefonu}}" pattern="[0-9]{10}">
+            </div>
+            <div class="form-group">
+                <label>Anne:</label>
+                <div class="parent-info">
+                    <select id="anneAdi" data-value="{{.Person.AnneAdi}}">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Baba:</label>
+                <div class="parent-info">
+                    <select id="babaAdi" data-value="{{.Person.BabaAdi}}">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Eş:</label>
+                <div class="parent-info">
+                    <select id="esId" data-value="{{.Person.EsID}}">
+                        <option value="">Seçiniz...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Cinsiyet:</label>
+                <select id="cinsiyet" required data-value="{{.Person.Cinsiyet}}">
+                    <option value="">Seçiniz...</option>
+                    <option value="Kadın">Kadın</option>
+                    <option value="Erkek">Erkek</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Hakkında:</label>
+                <textarea id="hakkinda">{{.Person.Hakkinda}}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Fotoğraf:</label>
+                <input type="file" id="fotograf" accept="image/*">
+                <div class="photo-preview">
+                    <img id="fotografOnizleme" 
+                         src="{{.Person.Fotograf}}"
+                         style="max-width: 300px; max-height: 300px; margin-top: 20px; margin-bottom: 20px; object-fit: contain; cursor: pointer;"
+                         onclick="buyukFotografGoster(this.src)"
+                         class="profile-img">
+                    <div class="photo-info">
+                        {{if .Person.Fotograf}}
+                            <span>Mevcut fotoğraf</span>
+                        {{else}}
+                            <span>Fotoğraf yüklenmemiş</span>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button type="submit" class="save-btn">Kaydet</button>
+                <button type="button" class="delete-btn" onclick="silKisi('{{.Person.ID}}')">Sil</button>
+            </div>
+        </form>
+        {{if .Children}}
+        <div class="children-section">
+            <h3>Soy Ağacı</h3>
+            <div class="children-list">
+                {{range .Children}}
+                <div class="child-item" style="margin-left: {{multiply (subtract .Nesil 1) 20}}px">
+                    <div class="child-info">
+                        <a href="/kisi/{{.ID}}" class="child-link">
+                            {{.Ad}} {{.Soyad}} ({{.Cinsiyet}}) - 
+                            {{if eq .Nesil -2}}
+                                {{if eq .Cinsiyet "Kadın"}}
+                                    {{if eq .AnneAdi ""}}Babaanne{{else}}Anneanne{{end}}
+                                {{else}}
+                                    {{if eq .AnneAdi ""}}Dede (baba tarafı){{else}}Dede (anne tarafı){{end}}
+                                {{end}}
+                            {{else if eq .Nesil -3}}
+                                Eş
+                            {{else if eq .Nesil -1}}
+                                {{if eq .Cinsiyet "Kadın"}}Anne{{else}}Baba{{end}}
+                            {{else if eq .Nesil 0}}
+                                Kardeş
+                            {{else if eq .Nesil 1}}
+                                Çocuk
+                            {{else}}
+                                Torun
+                            {{end}}
+                        </a>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+        {{end}}
+    </div>
+    <script src="/static/js/kisi-detay.js"></script>
+    <!-- Modal -->
+    <div id="fotoModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 1000;">
+        <span class="close" onclick="modalKapat()" style="position: absolute; right: 35px; top: 15px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+        <img id="buyukFotograf" style="margin: auto; display: block; max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    </div>
+</body>
+</html> 
